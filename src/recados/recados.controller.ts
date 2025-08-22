@@ -30,6 +30,7 @@ export class RecadosController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(id, typeof id)
     return this.recadosService.findOne(id);
   }
 
