@@ -11,11 +11,14 @@ import {
   Post,
   Put,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { addHeaderInteceptor } from 'src/common/interceptors/add-header-interceptor';
+import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection-interceptor';
 
 @Controller('recados')
 export class RecadosController {
@@ -24,11 +27,13 @@ export class RecadosController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
+  @UseInterceptors(TimingConnectionInterceptor)
   findAll(@Query() pagination: PaginationDto) {
     return this.recadosService.findAll(pagination);
   }
 
   @Get(':id')
+  @UseInterceptors(addHeaderInteceptor)
   findOne(@Param('id', ParseIntPipe) id: number) {
     console.log(id, typeof id)
     return this.recadosService.findOne(id);
