@@ -19,6 +19,7 @@ import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { addHeaderInteceptor } from 'src/common/interceptors/add-header-interceptor';
 import { TimingConnectionInterceptor } from 'src/common/interceptors/timing-connection-interceptor';
+import { ErrorHandlingInterceptor } from 'src/common/interceptors/error-handling-interceptor';
 
 @Controller('recados')
 export class RecadosController {
@@ -33,9 +34,8 @@ export class RecadosController {
   }
 
   @Get(':id')
-  @UseInterceptors(addHeaderInteceptor)
+  @UseInterceptors(addHeaderInteceptor, ErrorHandlingInterceptor)
   findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(id, typeof id)
     return this.recadosService.findOne(id);
   }
 
